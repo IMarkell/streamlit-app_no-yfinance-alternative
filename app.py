@@ -3,37 +3,22 @@ import pandas as pd
 
 st.set_page_config(page_title="Risk Tolerance Assessment", layout="wide")
 
-# ---------------------- CUSTOM BLUE THEME CSS ----------------------
+# ---------------------- BLUE THEME CSS ----------------------
 st.markdown("""
 <style>
-
-    /* Global font + color */
     body {
-        font-family: 'Segoe UI', sans-serif;
+        background-color: #FFFFFF;
         color: #0A1A2F;
+        font-family: 'Segoe UI', sans-serif;
     }
-
-    /* Page title */
     .stTitle {
-        font-size: 40px !important;
         color: #0A3D91 !important;
+        font-size: 40px !important;
         font-weight: 700 !important;
-        margin-bottom: 10px;
     }
-
-    /* Section headers */
     h2, h3 {
         color: #0A3D91 !important;
-        font-weight: 600 !important;
     }
-
-    /* Radio buttons */
-    .stRadio > label {
-        font-size: 16px !important;
-        color: #0A1A2F !important;
-    }
-
-    /* Card-style containers */
     .blue-card {
         background-color: #F2F6FF;
         padding: 20px;
@@ -41,19 +26,12 @@ st.markdown("""
         border: 1px solid #D6E2FF;
         margin-bottom: 20px;
     }
-
-    /* Metrics styling */
+    .stRadio > label {
+        color: #0A1A2F !important;
+    }
     [data-testid="stMetricValue"] {
         color: #0A3D91 !important;
-        font-weight: 700 !important;
     }
-
-    /* Table styling */
-    table {
-        border-radius: 10px !important;
-        overflow: hidden !important;
-    }
-
 </style>
 """, unsafe_allow_html=True)
 
@@ -108,6 +86,7 @@ risk_profiles = {
         "allocation": "20% Stocks, 80% Bonds",
         "rationale": "Low-risk tolerance, focusing on capital preservation.",
         "summary": "Invest primarily in bonds and stable assets.",
+        "persona": "Prefers stability and predictability. Dislikes volatility and values peace of mind over maximizing returns.",
         "recommended_investments": [
             {"ticker": "BND", "name": "Vanguard Total Bond Market ETF", "description": "Broad bond exposure"},
             {"ticker": "AGG", "name": "iShares Core U.S. Aggregate Bond ETF", "description": "Investment-grade bonds"},
@@ -121,6 +100,7 @@ risk_profiles = {
         "allocation": "50% Stocks, 50% Bonds",
         "rationale": "Moderate risk tolerance, seeks growth with some safety.",
         "summary": "Mix of stocks and bonds for balanced portfolio.",
+        "persona": "Comfortable with some ups and downs. Wants growth but also values balance and diversification.",
         "recommended_investments": [
             {"ticker": "VOO", "name": "Vanguard S&P 500 ETF", "description": "Large-cap diversified exposure"},
             {"ticker": "VTI", "name": "Vanguard Total Stock Market ETF", "description": "Broad U.S. equity exposure"},
@@ -134,6 +114,7 @@ risk_profiles = {
         "allocation": "80% Stocks, 20% Bonds",
         "rationale": "High-risk tolerance, accepting volatility for higher returns.",
         "summary": "Aggressive approach with a focus on stock investments.",
+        "persona": "Focused on long‑term growth and willing to tolerate volatility. Understands that markets move in cycles.",
         "recommended_investments": [
             {"ticker": "QQQ", "name": "Invesco QQQ Trust", "description": "Tech-heavy growth ETF"},
             {"ticker": "VUG", "name": "Vanguard Growth ETF", "description": "High-growth equities"},
@@ -181,10 +162,46 @@ st.write(f"**Goal:** {risk_profiles[profile]['goal']}")
 st.write(f"**Recommended Asset Allocation:** {risk_profiles[profile]['allocation']}")
 st.write(f"**Rationale:** {risk_profiles[profile]['rationale']}")
 st.write(f"**Summary:** {risk_profiles[profile]['summary']}")
+st.write(f"**Persona:** {risk_profiles[profile]['persona']}")
 st.markdown("</div>", unsafe_allow_html=True)
 
 st.subheader(f"Example Investments for a {profile} Risk Profile")
 st.table(pd.DataFrame(risk_profiles[profile]["recommended_investments"]))
+
+# ---------------------- HISTORICAL CONTEXT ----------------------
+st.markdown("---")
+st.subheader("Historical Market Context")
+
+st.markdown("""
+<div class='blue-card'>
+    <p><strong>Conservative Portfolios (20% stocks / 80% bonds):</strong> Historically experience smaller drawdowns and lower volatility, often returning 3–5% annually over long periods.</p>
+    <p><strong>Balanced Portfolios (50% stocks / 50% bonds):</strong> Historically return around 5–7% annually with moderate volatility, benefiting from diversification.</p>
+    <p><strong>Aggressive Portfolios (80% stocks / 20% bonds):</strong> Historically return 7–10% annually over long horizons but experience larger short‑term swings.</p>
+</div>
+""", unsafe_allow_html=True)
+
+# ---------------------- COMPARE ALL PROFILES ----------------------
+st.markdown("---")
+st.subheader("Compare All Risk Profiles")
+
+comparison_df = pd.DataFrame({
+    "Risk Level": ["Low", "Medium", "High"],
+    "Allocation": ["20% Stocks / 80% Bonds", "50% Stocks / 50% Bonds", "80% Stocks / 20% Bonds"],
+    "Typical Volatility Range": ["5–8%", "10–12%", "15–20%"],
+    "Strengths": [
+        "High stability, smaller drawdowns",
+        "Balanced growth and stability",
+        "Higher long‑term growth potential"
+    ],
+    "Trade‑offs": [
+        "Lower long‑term returns",
+        "Moderate drawdowns",
+        "Larger short‑term losses"
+    ]
+})
+
+st.table(comparison_df)
+
 # ---------------------- INTERACTIVE RISK SLIDER ----------------------
 st.markdown("---")
 st.subheader("Explore Other Risk Profiles")
@@ -204,14 +221,14 @@ selected_risk_index = st.slider(
 
 selected_risk_profile = risk_level_map[selected_risk_index]
 
-st.markdown(f"### Portfolio Suggestions for **{selected_risk_profile}** Risk Level")
+st.markdown(f"### Portfolio Suggestions for {selected_risk_profile} Risk Level")
 
 st.markdown("<div class='blue-card'>", unsafe_allow_html=True)
 st.write(f"**Goal:** {risk_profiles[selected_risk_profile]['goal']}")
 st.write(f"**Recommended Asset Allocation:** {risk_profiles[selected_risk_profile]['allocation']}")
 st.write(f"**Rationale:** {risk_profiles[selected_risk_profile]['rationale']}")
 st.write(f"**Summary:** {risk_profiles[selected_risk_profile]['summary']}")
+st.write(f"**Persona:** {risk_profiles[selected_risk_profile]['persona']}")
 st.markdown("</div>", unsafe_allow_html=True)
 
 st.table(pd.DataFrame(risk_profiles[selected_risk_profile]["recommended_investments"]))
-
