@@ -3,35 +3,56 @@ import pandas as pd
 
 st.set_page_config(page_title="Risk Tolerance Assessment", layout="wide")
 
-# ---------------------- BLUE THEME CSS ----------------------
+# ---------------------- UNIVERSAL WHITE BOX CSS ----------------------
 st.markdown("""
 <style>
+
     body {
-        background-color: #FFFFFF;
-        color: #0A1A2F;
         font-family: 'Segoe UI', sans-serif;
+        background-color: #E9EEF7;
     }
+
+    /* White content container */
+    .content-box {
+        background-color: #FFFFFF !important;
+        color: #0A1A2F !important;
+        padding: 25px;
+        border-radius: 12px;
+        border: 1px solid #D6E2FF;
+        margin-bottom: 25px;
+    }
+
+    /* Make ALL text inside the box dark blue */
+    .content-box * {
+        color: #0A1A2F !important;
+        font-size: 16px;
+    }
+
+    /* Title styling */
     .stTitle {
         color: #0A3D91 !important;
         font-size: 40px !important;
         font-weight: 700 !important;
     }
+
+    /* Section headers */
     h2, h3 {
         color: #0A3D91 !important;
+        font-weight: 600 !important;
     }
-    .blue-card {
-        background-color: #F2F6FF;
-        padding: 20px;
-        border-radius: 10px;
-        border: 1px solid #D6E2FF;
-        margin-bottom: 20px;
-    }
-    .stRadio > label {
+
+    /* Radio button text */
+    .stRadio label, .stRadio div, .stRadio p {
         color: #0A1A2F !important;
+        font-size: 16px !important;
     }
+
+    /* Metric values */
     [data-testid="stMetricValue"] {
         color: #0A3D91 !important;
+        font-weight: 700 !important;
     }
+
 </style>
 """, unsafe_allow_html=True)
 
@@ -128,13 +149,15 @@ risk_profiles = {
 # ---------------------- UI ----------------------
 st.title("Risk Tolerance Assessment")
 
-st.markdown("<div class='blue-card'>", unsafe_allow_html=True)
+# Questionnaire Header
+st.markdown("<div class='content-box'>", unsafe_allow_html=True)
 st.subheader("Questionnaire")
 st.write("Please answer all questions using the scale below:")
 st.markdown("</div>", unsafe_allow_html=True)
 
+# Display Questions
 for i, question in enumerate(all_questions):
-    st.markdown("<div class='blue-card'>", unsafe_allow_html=True)
+    st.markdown("<div class='content-box'>", unsafe_allow_html=True)
     display_question(question, i)
     st.markdown("</div>", unsafe_allow_html=True)
 
@@ -150,14 +173,13 @@ else:
     profile = "High"
 
 # ---------------------- RESULTS ----------------------
-st.markdown("---")
+st.markdown("<div class='content-box'>", unsafe_allow_html=True)
 st.subheader("Your Results")
 
 col1, col2 = st.columns(2)
 col1.metric("Risk Score", f"{total_score}/40")
 col2.metric("Risk Profile", profile)
 
-st.markdown("<div class='blue-card'>", unsafe_allow_html=True)
 st.write(f"**Goal:** {risk_profiles[profile]['goal']}")
 st.write(f"**Recommended Asset Allocation:** {risk_profiles[profile]['allocation']}")
 st.write(f"**Rationale:** {risk_profiles[profile]['rationale']}")
@@ -165,23 +187,26 @@ st.write(f"**Summary:** {risk_profiles[profile]['summary']}")
 st.write(f"**Persona:** {risk_profiles[profile]['persona']}")
 st.markdown("</div>", unsafe_allow_html=True)
 
+# Recommended Investments
+st.markdown("<div class='content-box'>", unsafe_allow_html=True)
 st.subheader(f"Example Investments for a {profile} Risk Profile")
 st.table(pd.DataFrame(risk_profiles[profile]["recommended_investments"]))
+st.markdown("</div>", unsafe_allow_html=True)
 
 # ---------------------- HISTORICAL CONTEXT ----------------------
-st.markdown("---")
+st.markdown("<div class='content-box'>", unsafe_allow_html=True)
 st.subheader("Historical Market Context")
+st.write("""
+**Conservative Portfolios (20% stocks / 80% bonds):** Historically experience smaller drawdowns and lower volatility, often returning 3–5% annually over long periods.
 
-st.markdown("""
-<div class='blue-card'>
-    <p><strong>Conservative Portfolios (20% stocks / 80% bonds):</strong> Historically experience smaller drawdowns and lower volatility, often returning 3–5% annually over long periods.</p>
-    <p><strong>Balanced Portfolios (50% stocks / 50% bonds):</strong> Historically return around 5–7% annually with moderate volatility, benefiting from diversification.</p>
-    <p><strong>Aggressive Portfolios (80% stocks / 20% bonds):</strong> Historically return 7–10% annually over long horizons but experience larger short‑term swings.</p>
-</div>
-""", unsafe_allow_html=True)
+**Balanced Portfolios (50% stocks / 50% bonds):** Historically return around 5–7% annually with moderate volatility, benefiting from diversification.
+
+**Aggressive Portfolios (80% stocks / 20% bonds):** Historically return 7–10% annually over long horizons but experience larger short‑term swings.
+""")
+st.markdown("</div>", unsafe_allow_html=True)
 
 # ---------------------- COMPARE ALL PROFILES ----------------------
-st.markdown("---")
+st.markdown("<div class='content-box'>", unsafe_allow_html=True)
 st.subheader("Compare All Risk Profiles")
 
 comparison_df = pd.DataFrame({
@@ -201,9 +226,10 @@ comparison_df = pd.DataFrame({
 })
 
 st.table(comparison_df)
+st.markdown("</div>", unsafe_allow_html=True)
 
 # ---------------------- INTERACTIVE RISK SLIDER ----------------------
-st.markdown("---")
+st.markdown("<div class='content-box'>", unsafe_allow_html=True)
 st.subheader("Explore Other Risk Profiles")
 
 st.write("Use the slider below to explore how portfolio recommendations change across different risk levels.")
@@ -221,14 +247,12 @@ selected_risk_index = st.slider(
 
 selected_risk_profile = risk_level_map[selected_risk_index]
 
-st.markdown(f"### Portfolio Suggestions for {selected_risk_profile} Risk Level")
-
-st.markdown("<div class='blue-card'>", unsafe_allow_html=True)
+st.write(f"### Portfolio Suggestions for {selected_risk_profile} Risk Level")
 st.write(f"**Goal:** {risk_profiles[selected_risk_profile]['goal']}")
 st.write(f"**Recommended Asset Allocation:** {risk_profiles[selected_risk_profile]['allocation']}")
 st.write(f"**Rationale:** {risk_profiles[selected_risk_profile]['rationale']}")
 st.write(f"**Summary:** {risk_profiles[selected_risk_profile]['summary']}")
 st.write(f"**Persona:** {risk_profiles[selected_risk_profile]['persona']}")
-st.markdown("</div>", unsafe_allow_html=True)
 
 st.table(pd.DataFrame(risk_profiles[selected_risk_profile]["recommended_investments"]))
+st.markdown("</div>", unsafe_allow_html=True)
