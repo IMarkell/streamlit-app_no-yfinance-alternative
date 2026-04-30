@@ -185,3 +185,33 @@ st.markdown("</div>", unsafe_allow_html=True)
 
 st.subheader(f"Example Investments for a {profile} Risk Profile")
 st.table(pd.DataFrame(risk_profiles[profile]["recommended_investments"]))
+# ---------------------- INTERACTIVE RISK SLIDER ----------------------
+st.markdown("---")
+st.subheader("Explore Other Risk Profiles")
+
+st.write("Use the slider below to explore how portfolio recommendations change across different risk levels.")
+
+risk_level_map = {0: "Low", 1: "Medium", 2: "High"}
+
+selected_risk_index = st.slider(
+    "Adjust Risk Level",
+    min_value=0,
+    max_value=2,
+    value=0 if profile == "Low" else (1 if profile == "Medium" else 2),
+    format="%d",
+    label_visibility="collapsed"
+)
+
+selected_risk_profile = risk_level_map[selected_risk_index]
+
+st.markdown(f"### Portfolio Suggestions for **{selected_risk_profile}** Risk Level")
+
+st.markdown("<div class='blue-card'>", unsafe_allow_html=True)
+st.write(f"**Goal:** {risk_profiles[selected_risk_profile]['goal']}")
+st.write(f"**Recommended Asset Allocation:** {risk_profiles[selected_risk_profile]['allocation']}")
+st.write(f"**Rationale:** {risk_profiles[selected_risk_profile]['rationale']}")
+st.write(f"**Summary:** {risk_profiles[selected_risk_profile]['summary']}")
+st.markdown("</div>", unsafe_allow_html=True)
+
+st.table(pd.DataFrame(risk_profiles[selected_risk_profile]["recommended_investments"]))
+
