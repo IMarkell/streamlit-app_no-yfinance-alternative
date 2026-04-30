@@ -3,75 +3,50 @@ import pandas as pd
 
 st.set_page_config(page_title="Risk Tolerance Assessment", layout="wide")
 
-# ---------------------- LIGHT / DARK MODE TOGGLE ----------------------
-st.sidebar.title("Display Settings")
-dark_mode = st.sidebar.checkbox("Dark Mode")
-
-# ---------------------- UNIVERSAL BLACK & WHITE THEME ----------------------
-background = "#000000" if dark_mode else "#FFFFFF"
-text_color = "#FFFFFF" if dark_mode else "#000000"
-box_bg = "#111111" if dark_mode else "#FFFFFF"
-border_color = "#444444" if dark_mode else "#DDDDDD"
-
-st.markdown(f"""
+# ---------------------- SIMPLE BLACK & WHITE CSS ----------------------
+st.markdown("""
 <style>
 
-    /* PAGE BACKGROUND */
-    body {{
-        background-color: {background};
-        color: {text_color};
+    body {
+        background-color: #FFFFFF;
+        color: #000000;
         font-family: 'Segoe UI', sans-serif;
-    }}
+    }
 
-    /* UNIVERSAL CONTENT BOX */
-    .content-box {{
-        background-color: {box_bg};
-        border: 1px solid {border_color};
+    .content-box {
+        background-color: #FFFFFF;
+        color: #000000;
         padding: 25px;
-        border-radius: 10px;
+        border-radius: 6px;
+        border: 1px solid #000000;
         margin-bottom: 25px;
-    }}
+    }
 
-    /* FORCE ALL TEXT INSIDE BOX TO FOLLOW MODE */
-    .content-box * {{
-        color: {text_color} !important;
+    .content-box * {
+        color: #000000 !important;
         font-size: 16px;
-    }}
+    }
 
-    /* HEADERS */
-    h1, h2, h3, h4, h5, h6 {{
-        color: {text_color} !important;
-        font-weight: 600 !important;
-    }}
+    h1, h2, h3, h4 {
+        color: #000000 !important;
+        font-weight: 600;
+    }
 
-    /* RADIO BUTTON TEXT */
-    .stRadio label, .stRadio div, .stRadio p {{
-        color: {text_color} !important;
+    .stRadio label, .stRadio div, .stRadio p {
+        color: #000000 !important;
         font-size: 16px !important;
-    }}
+    }
 
-    /* SLIDER LABELS */
-    .stSlider label, .stSlider div {{
-        color: {text_color} !important;
-    }}
+    table, th, td {
+        color: #000000 !important;
+        background-color: #FFFFFF !important;
+        border-color: #000000 !important;
+    }
 
-    /* METRIC TEXT */
-    [data-testid="stMetricValue"], [data-testid="stMetricLabel"] {{
-        color: {text_color} !important;
+    [data-testid="stMetricValue"], [data-testid="stMetricLabel"] {
+        color: #000000 !important;
         font-weight: 700 !important;
-    }}
-
-    /* TABLE TEXT */
-    table, th, td {{
-        color: {text_color} !important;
-        background-color: {box_bg} !important;
-        border-color: {border_color} !important;
-    }}
-
-    /* MARKDOWN PARAGRAPHS */
-    p, li, span, div {{
-        color: {text_color} !important;
-    }}
+    }
 
 </style>
 """, unsafe_allow_html=True)
