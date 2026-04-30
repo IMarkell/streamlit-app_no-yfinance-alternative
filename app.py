@@ -1,13 +1,67 @@
 import streamlit as st
 import pandas as pd
 
-st.set_page_config(page_title="Risk Tolerance Assessment", page_icon="📊")
+st.set_page_config(page_title="Risk Tolerance Assessment", layout="wide")
 
-# Initialize session state for user responses
+# ---------------------- CUSTOM BLUE THEME CSS ----------------------
+st.markdown("""
+<style>
+
+    /* Global font + color */
+    body {
+        font-family: 'Segoe UI', sans-serif;
+        color: #0A1A2F;
+    }
+
+    /* Page title */
+    .stTitle {
+        font-size: 40px !important;
+        color: #0A3D91 !important;
+        font-weight: 700 !important;
+        margin-bottom: 10px;
+    }
+
+    /* Section headers */
+    h2, h3 {
+        color: #0A3D91 !important;
+        font-weight: 600 !important;
+    }
+
+    /* Radio buttons */
+    .stRadio > label {
+        font-size: 16px !important;
+        color: #0A1A2F !important;
+    }
+
+    /* Card-style containers */
+    .blue-card {
+        background-color: #F2F6FF;
+        padding: 20px;
+        border-radius: 10px;
+        border: 1px solid #D6E2FF;
+        margin-bottom: 20px;
+    }
+
+    /* Metrics styling */
+    [data-testid="stMetricValue"] {
+        color: #0A3D91 !important;
+        font-weight: 700 !important;
+    }
+
+    /* Table styling */
+    table {
+        border-radius: 10px !important;
+        overflow: hidden !important;
+    }
+
+</style>
+""", unsafe_allow_html=True)
+
+# ---------------------- SESSION STATE ----------------------
 if "responses" not in st.session_state:
     st.session_state.responses = [""] * 10
 
-# Function to display each question
+# ---------------------- QUESTION DISPLAY FUNCTION ----------------------
 def display_question(question, index):
     options = ["Very uncomfortable", "uncomfortable", "Neutral", "comfortable", "very comfortable"]
     current_selection_index = (
@@ -19,7 +73,7 @@ def display_question(question, index):
         question, options, index=current_selection_index, key=f"q_{index}"
     )
 
-# ORIGINAL 5 QUESTIONS (unchanged)
+# ---------------------- QUESTIONS ----------------------
 original_questions = [
     "1. How would you feel if your investment portfolio lost 20% of value in a year?",
     "2. How comfortable are you with delaying financial rewards today in exchange for potentially greater rewards in the future?",
@@ -28,7 +82,6 @@ original_questions = [
     "5. How comfortable are you making financial decisions when the outcome is uncertain?"
 ]
 
-# NEW 5 QUESTIONS (more variety)
 new_questions = [
     "6. How comfortable are you with investing money that you may not need access to for several years?",
     "7. How comfortable are you with the idea that taking more risk could potentially increase your long‑term wealth?",
@@ -39,7 +92,7 @@ new_questions = [
 
 all_questions = original_questions + new_questions
 
-# Score mapping
+# ---------------------- SCORING ----------------------
 score_for_option = {
     "Very uncomfortable": 0,
     "uncomfortable": 1,
@@ -48,7 +101,7 @@ score_for_option = {
     "very comfortable": 4,
 }
 
-# Risk profiles
+# ---------------------- RISK PROFILES ----------------------
 risk_profiles = {
     "Low": {
         "goal": "Preserve capital and achieve a modest return.",
@@ -56,7 +109,7 @@ risk_profiles = {
         "rationale": "Low-risk tolerance, focusing on capital preservation.",
         "summary": "Invest primarily in bonds and stable assets.",
         "recommended_investments": [
-            {"ticker": "BND", "name": "Vanguard Total Bond Market ETF", "description": "Broad bond market exposure"},
+            {"ticker": "BND", "name": "Vanguard Total Bond Market ETF", "description": "Broad bond exposure"},
             {"ticker": "AGG", "name": "iShares Core U.S. Aggregate Bond ETF", "description": "Investment-grade bonds"},
             {"ticker": "KO", "name": "Coca-Cola", "description": "Stable dividend stock"},
             {"ticker": "PG", "name": "Procter & Gamble", "description": "Low-volatility consumer staples"},
@@ -91,14 +144,20 @@ risk_profiles = {
     },
 }
 
-# UI
-st.title("📊 10‑Question Risk Tolerance Assessment")
+# ---------------------- UI ----------------------
+st.title("Risk Tolerance Assessment")
+
+st.markdown("<div class='blue-card'>", unsafe_allow_html=True)
+st.subheader("Questionnaire")
 st.write("Please answer all questions using the scale below:")
+st.markdown("</div>", unsafe_allow_html=True)
 
 for i, question in enumerate(all_questions):
+    st.markdown("<div class='blue-card'>", unsafe_allow_html=True)
     display_question(question, i)
+    st.markdown("</div>", unsafe_allow_html=True)
 
-# Calculate total score (0–40)
+# Score calculation
 total_score = sum(score_for_option.get(r, 0) for r in st.session_state.responses)
 
 # Determine risk profile
@@ -109,17 +168,20 @@ elif total_score <= 26:
 else:
     profile = "High"
 
+# ---------------------- RESULTS ----------------------
 st.markdown("---")
-st.header("📈 Your Results")
+st.subheader("Your Results")
 
 col1, col2 = st.columns(2)
 col1.metric("Risk Score", f"{total_score}/40")
 col2.metric("Risk Profile", profile)
 
+st.markdown("<div class='blue-card'>", unsafe_allow_html=True)
 st.write(f"**Goal:** {risk_profiles[profile]['goal']}")
 st.write(f"**Recommended Asset Allocation:** {risk_profiles[profile]['allocation']}")
 st.write(f"**Rationale:** {risk_profiles[profile]['rationale']}")
 st.write(f"**Summary:** {risk_profiles[profile]['summary']}")
+st.markdown("</div>", unsafe_allow_html=True)
 
-st.subheader(f"💼 Example Investments for a {profile} Risk Profile")
+st.subheader(f"Example Investments for a {profile} Risk Profile")
 st.table(pd.DataFrame(risk_profiles[profile]["recommended_investments"]))
