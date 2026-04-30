@@ -7,60 +7,70 @@ st.set_page_config(page_title="Risk Tolerance Assessment", layout="wide")
 st.sidebar.title("Display Settings")
 dark_mode = st.sidebar.checkbox("Dark Mode")
 
-# ---------------------- MINIMAL BLACK & WHITE THEME ----------------------
-if dark_mode:
-    background = "#000000"
-    text_color = "#FFFFFF"
-    box_bg = "#111111"
-    border_color = "#333333"
-else:
-    background = "#FFFFFF"
-    text_color = "#000000"
-    box_bg = "#FFFFFF"
-    border_color = "#DDDDDD"
+# ---------------------- UNIVERSAL BLACK & WHITE THEME ----------------------
+background = "#000000" if dark_mode else "#FFFFFF"
+text_color = "#FFFFFF" if dark_mode else "#000000"
+box_bg = "#111111" if dark_mode else "#FFFFFF"
+border_color = "#444444" if dark_mode else "#DDDDDD"
 
 st.markdown(f"""
 <style>
 
+    /* PAGE BACKGROUND */
     body {{
         background-color: {background};
         color: {text_color};
         font-family: 'Segoe UI', sans-serif;
     }}
 
+    /* UNIVERSAL CONTENT BOX */
     .content-box {{
         background-color: {box_bg};
-        color: {text_color};
+        border: 1px solid {border_color};
         padding: 25px;
         border-radius: 10px;
-        border: 1px solid {border_color};
         margin-bottom: 25px;
     }}
 
+    /* FORCE ALL TEXT INSIDE BOX TO FOLLOW MODE */
     .content-box * {{
         color: {text_color} !important;
         font-size: 16px;
     }}
 
-    .stTitle {{
-        color: {text_color} !important;
-        font-size: 40px !important;
-        font-weight: 700 !important;
-    }}
-
-    h2, h3 {{
+    /* HEADERS */
+    h1, h2, h3, h4, h5, h6 {{
         color: {text_color} !important;
         font-weight: 600 !important;
     }}
 
+    /* RADIO BUTTON TEXT */
     .stRadio label, .stRadio div, .stRadio p {{
         color: {text_color} !important;
         font-size: 16px !important;
     }}
 
-    [data-testid="stMetricValue"] {{
+    /* SLIDER LABELS */
+    .stSlider label, .stSlider div {{
+        color: {text_color} !important;
+    }}
+
+    /* METRIC TEXT */
+    [data-testid="stMetricValue"], [data-testid="stMetricLabel"] {{
         color: {text_color} !important;
         font-weight: 700 !important;
+    }}
+
+    /* TABLE TEXT */
+    table, th, td {{
+        color: {text_color} !important;
+        background-color: {box_bg} !important;
+        border-color: {border_color} !important;
+    }}
+
+    /* MARKDOWN PARAGRAPHS */
+    p, li, span, div {{
+        color: {text_color} !important;
     }}
 
 </style>
