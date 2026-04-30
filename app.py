@@ -3,55 +3,65 @@ import pandas as pd
 
 st.set_page_config(page_title="Risk Tolerance Assessment", layout="wide")
 
-# ---------------------- UNIVERSAL WHITE BOX CSS ----------------------
-st.markdown("""
+# ---------------------- LIGHT / DARK MODE TOGGLE ----------------------
+st.sidebar.title("Display Settings")
+dark_mode = st.sidebar.checkbox("Dark Mode")
+
+# ---------------------- MINIMAL BLACK & WHITE THEME ----------------------
+if dark_mode:
+    background = "#000000"
+    text_color = "#FFFFFF"
+    box_bg = "#111111"
+    border_color = "#333333"
+else:
+    background = "#FFFFFF"
+    text_color = "#000000"
+    box_bg = "#FFFFFF"
+    border_color = "#DDDDDD"
+
+st.markdown(f"""
 <style>
 
-    body {
+    body {{
+        background-color: {background};
+        color: {text_color};
         font-family: 'Segoe UI', sans-serif;
-        background-color: #E9EEF7;
-    }
+    }}
 
-    /* White content container */
-    .content-box {
-        background-color: #FFFFFF !important;
-        color: #0A1A2F !important;
+    .content-box {{
+        background-color: {box_bg};
+        color: {text_color};
         padding: 25px;
-        border-radius: 12px;
-        border: 1px solid #D6E2FF;
+        border-radius: 10px;
+        border: 1px solid {border_color};
         margin-bottom: 25px;
-    }
+    }}
 
-    /* Make ALL text inside the box dark blue */
-    .content-box * {
-        color: #0A1A2F !important;
+    .content-box * {{
+        color: {text_color} !important;
         font-size: 16px;
-    }
+    }}
 
-    /* Title styling */
-    .stTitle {
-        color: #0A3D91 !important;
+    .stTitle {{
+        color: {text_color} !important;
         font-size: 40px !important;
         font-weight: 700 !important;
-    }
+    }}
 
-    /* Section headers */
-    h2, h3 {
-        color: #0A3D91 !important;
+    h2, h3 {{
+        color: {text_color} !important;
         font-weight: 600 !important;
-    }
+    }}
 
-    /* Radio button text */
-    .stRadio label, .stRadio div, .stRadio p {
-        color: #0A1A2F !important;
+    .stRadio label, .stRadio div, .stRadio p {{
+        color: {text_color} !important;
         font-size: 16px !important;
-    }
+    }}
 
-    /* Metric values */
-    [data-testid="stMetricValue"] {
-        color: #0A3D91 !important;
+    [data-testid="stMetricValue"] {{
+        color: {text_color} !important;
         font-weight: 700 !important;
-    }
+    }}
 
 </style>
 """, unsafe_allow_html=True)
