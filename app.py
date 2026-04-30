@@ -3,79 +3,59 @@ import pandas as pd
 
 st.set_page_config(page_title="Risk Tolerance Assessment", layout="wide")
 
-# ---------------------- SIDEBAR DARK MODE TOGGLE ----------------------
-st.sidebar.title("Display Settings")
-dark_mode = st.sidebar.checkbox("Enable Dark Mode")
+# ---------------------- CUSTOM BLUE THEME CSS ----------------------
+st.markdown("""
+<style>
 
-# ---------------------- LIGHT & DARK MODE CSS ----------------------
-if dark_mode:
-    # DARK MODE THEME
-    st.markdown("""
-    <style>
-        body {
-            background-color: #0D1117;
-            color: #E6EDF3;
-            font-family: 'Segoe UI', sans-serif;
-        }
-        .stTitle {
-            color: #58A6FF !important;
-            font-size: 40px !important;
-            font-weight: 700 !important;
-        }
-        h2, h3 {
-            color: #58A6FF !important;
-        }
-        .blue-card {
-            background-color: #161B22;
-            padding: 20px;
-            border-radius: 10px;
-            border: 1px solid #30363D;
-            margin-bottom: 20px;
-        }
-        .stRadio > label {
-            color: #E6EDF3 !important;
-        }
-        table {
-            color: #E6EDF3 !important;
-        }
-        [data-testid="stMetricValue"] {
-            color: #58A6FF !important;
-        }
-    </style>
-    """, unsafe_allow_html=True)
+    /* Global font + color */
+    body {
+        font-family: 'Segoe UI', sans-serif;
+        color: #0A1A2F;
+    }
 
-else:
-    # LIGHT MODE BLUE THEME
-    st.markdown("""
-    <style>
-        body {
-            background-color: #FFFFFF;
-            color: #0A1A2F;
-            font-family: 'Segoe UI', sans-serif;
-        }
-        .stTitle {
-            color: #0A3D91 !important;
-            font-size: 40px !important;
-            font-weight: 700 !important;
-        }
-        h2, h3 {
-            color: #0A3D91 !important;
-        }
-        .blue-card {
-            background-color: #F2F6FF;
-            padding: 20px;
-            border-radius: 10px;
-            border: 1px solid #D6E2FF;
-            margin-bottom: 20px;
-        }
-        .stRadio > label {
-            color: #0A1A2F !important;
-        }
-        [data-testid="stMetricValue"] {
-            color: #0A3D91 !important;
-        }
-    </style>
-    """, unsafe_allow_html=True)
+    /* Page title */
+    .stTitle {
+        font-size: 40px !important;
+        color: #0A3D91 !important;
+        font-weight: 700 !important;
+        margin-bottom: 10px;
+    }
+
+    /* Section headers */
+    h2, h3 {
+        color: #0A3D91 !important;
+        font-weight: 600 !important;
+    }
+
+    /* Radio buttons */
+    .stRadio > label {
+        font-size: 16px !important;
+        color: #0A1A2F !important;
+    }
+
+    /* Card-style containers */
+    .blue-card {
+        background-color: #F2F6FF;
+        padding: 20px;
+        border-radius: 10px;
+        border: 1px solid #D6E2FF;
+        margin-bottom: 20px;
+    }
+
+    /* Metrics styling */
+    [data-testid="stMetricValue"] {
+        color: #0A3D91 !important;
+        font-weight: 700 !important;
+    }
+
+    /* Table styling */
+    table {
+        border-radius: 10px !important;
+        overflow: hidden !important;
+    }
+
+</style>
+""", unsafe_allow_html=True)
 
 # ---------------------- SESSION STATE ----------------------
 if "responses" not in st.session_state:
